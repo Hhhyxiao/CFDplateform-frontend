@@ -1,9 +1,34 @@
-<!-- NG-ZORRO -->
-<button nz-button nzType="primary">Primary Button</button>
-    <button nz-button nzType="default">Default Button</button>
-    <button nz-button nzType="dashed">Dashed Button</button>
-    <button nz-button nzType="text">Text Button</button>
-    <a nz-button nzType="link">Link Button</a>
-<a href="https://github.com/NG-ZORRO/ng-zorro-antd" target="_blank" style="display: flex;align-items: center;justify-content: center;height: 100%;width: 100%;">
-  <img height="300" src="https://img.alicdn.com/tfs/TB1X.qJJgHqK1RjSZFgXXa7JXXa-89-131.svg">
-</a>
+<nz-layout>
+  <nz-header>
+    <a routerLink="/dashboard">
+      <h3>CFD仿真模拟平台</h3>>
+    </a>
+    <h3 routerLink="/dashboard">CFD仿真模拟平台</h3>>
+  </nz-header>
+  <nz-layout>
+    <nz-sider nzWidth="200px" nzTheme="light">
+      <ul nz-menu nzMode="inline" class="sider-menu">
+        <li nz-menu-item nzMatchRouter >
+          <i nz-icon nzType="layout" nzTheme="outline"></i>
+          <a [routerLink]="['/', 'project']">项目列表</a>
+        </li>
+        
+        <li nz-submenu nzIcon="notification" nzTitle="快速导航">
+          <ul>
+            <li *ngFor="let project of projects" nz-menu-item nzMatchRouter>
+              <a [routerLink]="['/', 'project_detail', project.name]">{{project.name}}</a>
+            </li>
+          
+          </ul>
+        </li>
+      </ul>
+    </nz-sider>
+    <nz-layout class="inner-layout">
+      <nz-content>
+        <app-running-info></app-running-info>
+        <router-outlet></router-outlet>
+        <app-messages></app-messages>
+      </nz-content>
+    </nz-layout>
+  </nz-layout>
+</nz-layout>

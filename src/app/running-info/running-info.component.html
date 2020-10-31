@@ -1,0 +1,8 @@
+<div *ngIf = "running">
+    <h3>本地机器正在计算：</h3>
+    <h3>{{"项目:" + runningProject}}</h3>
+    <h3>{{"案例:" + runningCase}}</h3>
+</div>
+<div *ngIf = "!running">
+    <h3>本地机器空闲</h3>
+</div>

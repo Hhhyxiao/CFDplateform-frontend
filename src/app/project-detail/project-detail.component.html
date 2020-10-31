@@ -1,0 +1,89 @@
+<a nz-button nzType="primary" style="float:right" (click)="show()">创建子项目</a>
+<h1>{{projectName}}的子项目列表</h1>
+<nz-table #basicTable [nzData]="cases">
+    <thead>
+      <tr>
+        <th>子项目名称</th>
+        <th>创建时间</th>
+        <th>结果查看</th>
+        <th>开始计算</th>
+        <th>删除</th>
+        <th>其它操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let case of cases">
+        <td>{{ case.name }}</td>
+        <td>{{ case.createTime | date: 'yyyy-MM-dd HH:mm:ss'}}</td>
+        <td>
+          <a (click)="showModal(case.name)">查看结果</a>
+          
+        </td>
+        <td>
+          <a nz-popconfirm
+          nzPopconfirmTitle="确认开始计算？"
+          nzPopconfirmPlacement="bottom"
+          (nzOnConfirm)="execScript(case.name)"
+          (nzOnCancel)="cancelDelete()">开始计算</a>
+        </td>
+        <td>
+          <a nz-popconfirm
+          nzPopconfirmTitle="确认删除？"
+          nzPopconfirmPlacement="bottom"
+          (nzOnConfirm)="delete(case.name)"
+          (nzOnCancel)="cancelDelete()">删除</a>
+        </td>
+        <td>
+            <a nz-dropdown [nzDropdownMenu]="menu">
+                更多操作
+                <i nz-icon nzType="down"></i>
+              </a>
+              <nz-dropdown-menu #menu="nzDropdownMenu">
+                <ul nz-menu nzSelectable>
+                    <li nz-menu-item (click)="log('1st menu item')">上传jou</li>
+                    <li nz-menu-item (click)="log('2nd menu item')">上传mesh</li>
+                </ul>
+              </nz-dropdown-menu>
+        </td>
+
+      </tr>
+    </tbody>
+</nz-table>
+<a nz-button nzType="primary" style="float:right" routerLink="/project">返回</a>
+<nz-modal nzWidth = 1000px [(nzVisible)]="isVisible" nzTitle="各个算例结果汇总" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+    <nz-table #basicTable [nzData]="results">
+        <thead>
+          <tr>
+            <th>case名称</th>
+            <th>平均速度</th>
+            <th>标准差</th>
+            <th>相对标准差</th>
+            <th>相完成时间</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let result of results">
+            <td>{{ result.subCaseName }}</td>
+            <td>{{ result.average }}</td>
+            <td>{{ result.standardDev }}</td>
+            <td>{{ result.ratio }}</td>
+            <td>{{ result.time }}</td>
+          </tr>
+        </tbody>
+    </nz-table>
+</nz-modal>
+<nz-modal nzWidth = 1000px [(nzVisible)]="isVisibleSub" nzTitle="创建子项目" (nzOnCancel)="close()" [nzFooter]="footer">
+  <form nz-form [formGroup]="validateForm" (ngSubmit)="submit()">
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" nzRequired="email">子项目名称</nz-form-label>
+      <nz-form-control [nzSm]="14">
+        <input nz-input formControlName="subProjectName">
+      </nz-form-control>
+    </nz-form-item >
+  </form>
+</nz-modal>
+
+<ng-template #footer>
+  <button nz-button (click)="close()">取消</button>
+  <button nz-button [nzLoading]="isSubmitting" nzType="primary" style="float:right" (click)="submit()">创建</button>
+</ng-template> 

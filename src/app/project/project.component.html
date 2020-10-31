@@ -1,0 +1,47 @@
+<a nz-button nzType="primary" style="float:right" (click)="show()">创建项目</a>
+<h1>项目列表</h1>
+<nz-table #basicTable [nzData]="projects">
+    <thead>
+      <tr>
+        <th>序号</th>
+        <th>项目名称</th>
+        <th>创建时间</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let project of projects; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ project.name }}</td>
+        <td>{{ project.createTime | date: 'yyyy-MM-dd HH:mm:ss' }}</td>
+        <td>
+          <a routerLink="/project_detail/{{project.name}}">
+            详情
+          </a>
+          <a
+          nz-popconfirm
+          nzPopconfirmTitle="确认删除？"
+          nzPopconfirmPlacement="bottom"
+          (nzOnConfirm)="delete(project.name)"
+          (nzOnCancel)="cancelDelete()"
+          >删除
+          </a>
+        </td>
+      </tr>
+    </tbody>
+</nz-table>
+<nz-modal nzWidth = 1000px [(nzVisible)]="isVisible" nzTitle="创建项目" (nzOnCancel)="close()" [nzFooter]="footer">
+  <form nz-form [formGroup]="validateForm" (ngSubmit)="submit()">
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" nzRequired="email">项目名称</nz-form-label>
+      <nz-form-control [nzSm]="14">
+        <input nz-input formControlName="projectName">
+      </nz-form-control>
+    </nz-form-item >
+  </form>
+</nz-modal>
+
+<ng-template #footer>
+  <button nz-button (click)="close()">取消</button>
+  <button nz-button [nzLoading]="isSubmitting" nzType="primary" style="float:right" (click)="submit()">创建</button>
+</ng-template> 
