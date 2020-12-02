@@ -28,6 +28,8 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzNotificationModule } from 'ng-zorro-antd/notification';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { UploadFileComponent } from './upload-file/upload-file.component';
+import { FileUploadModule } from 'ng2-file-upload';
 
 registerLocaleData(en);
 
@@ -41,7 +43,8 @@ registerLocaleData(en);
     ButtonComponent,
     ProjectComponent,
     ProjectDetailComponent,
-    RunningInfoComponent
+    RunningInfoComponent,
+    UploadFileComponent
   ],
   imports: [
     BrowserModule,
@@ -60,7 +63,8 @@ registerLocaleData(en);
     ReactiveFormsModule,
     NzNotificationModule,
     NzPopconfirmModule,
-    NzIconModule 
+    NzIconModule,
+    FileUploadModule
   ],
   providers: [
     // no need to place any providers due to the `providedIn` flag...
