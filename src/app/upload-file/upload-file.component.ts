@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FileUploader } from 'ng2-file-upload';
 
-
-const URL = 'https://evening-anchorage-3159.herokuapp.com/api/';
-
 @Component({
   selector: 'app-upload-file',
   templateUrl: './upload-file.component.html',
@@ -11,44 +8,35 @@ const URL = 'https://evening-anchorage-3159.herokuapp.com/api/';
 })
 export class UploadFileComponent implements OnInit {
 
-  uploader:FileUploader;
-  hasBaseDropZoneOver:boolean;
-  hasAnotherDropZoneOver:boolean;
-  response:string;
- 
-  constructor (){
-    this.uploader = new FileUploader({
-      url: URL,
-      disableMultipart: true, // 'DisableMultipart' must be 'true' for formatDataFunction to be called.
-      formatDataFunctionIsAsync: true,
-      formatDataFunction: async (item) => {
-        return new Promise( (resolve, reject) => {
-          resolve({
-            name: item._file.name,
-            length: item._file.size,
-            contentType: item._file.type,
-            date: new Date()
-          });
-        });
-      }
-    });
- 
-    this.hasBaseDropZoneOver = false;
-    this.hasAnotherDropZoneOver = false;
- 
-    this.response = '';
- 
-    this.uploader.response.subscribe( res => this.response = res );
-  }
- 
-  public fileOverBase(e:any):void {
-    this.hasBaseDropZoneOver = e;
-  }
- 
-  public fileOverAnother(e:any):void {
-    this.hasAnotherDropZoneOver = e;
-  }
+  
+  constructor() { }
+
   ngOnInit(): void {
+  }
+  public uploader:FileUploader = new FileUploader({
+    url: "/api/upload/",
+    method: "POST",
+    itemAlias: "file"
+  });
+  // C: 定义事件，选择文件
+  selectedFileOnChanged(event:any) {
+      // 打印文件选择名称
+      console.log(event.target.value);
+  }
+  // D: 定义事件，上传文件
+  uploadFile() {
+      // 上传
+      this.uploader.queue[0].onSuccess = function (response, status, headers) {
+          // 上传文件成功
+          if (status == 200) {
+              // 上传文件后获取服务器返回的数据
+              let tempRes = JSON.parse(response);
+          } else {
+              // 上传文件后获取服务器返回的数据错误
+              alert("");
+          }
+      };
+      this.uploader.queue[0].upload(); // 开始上传
   }
 
 }
